@@ -19,12 +19,12 @@ public class PlayerInventory : MonoBehaviour
         playerUI = GetComponent<PlayerUIHandler>();
         if (playerUI != null)
         {
-            playerUI.DrawInventoryUI(GetInventory());
+            playerUI.DisplayInventoryUI(GetInventory());
         }
     }
     private void UpdateInventoryUI()
     {
-        playerUI.UpdateInventoryUI(GetInventory());
+        playerUI.DisplayInventoryUI(GetInventory());
     }
     public void AssignWeapon(GameObject weapon)
     {
