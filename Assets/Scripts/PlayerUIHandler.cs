@@ -14,6 +14,7 @@ public class PlayerUIHandler : MonoBehaviour
         {
             playerHealth.OnHit += UpdateHealthTxt;
             playerHealth.OnDeath += UpdateHealthTxt;
+            playerHealth.OnHealed += UpdateHealthTxt;
         }
     }
     private void OnDisable()
@@ -22,6 +23,7 @@ public class PlayerUIHandler : MonoBehaviour
         {
             playerHealth.OnHit -= UpdateHealthTxt;
             playerHealth.OnDeath -= UpdateHealthTxt;
+            playerHealth.OnHealed -= UpdateHealthTxt;
         }
     }
     public void UpdateHealthTxt()

@@ -3,20 +3,26 @@ using UnityEngine;
 
 public class HealthHandler : MonoBehaviour
 {
-    [SerializeField] private float health = 100f;
+    [SerializeField] private float maxHealth = 100f;
+    private float currHealth;
     public event Action OnDeath;
     public event Action OnHit;
+    public event Action OnHealed;
     private bool isAlive = true;
-    public float Health { set => health = value; }
+    public float Health { set => currHealth = value; }
+    public void Start()
+    {
+        currHealth = maxHealth;
+    }
     public void DecrementHealth(float dmg)
     {
         if (!isAlive) return;
 
-        health -= dmg;
-        if (health <= 0)
+        currHealth -= dmg;
+        if (currHealth <= 0)
         {
             isAlive = false;
-            health = 0;
+            currHealth = 0;
             OnDeath?.Invoke();
             return;
         }
@@ -26,17 +32,18 @@ public class HealthHandler : MonoBehaviour
     public void AddHealth(float healing)
     {
         if (!isAlive) return;
-        health += healing;
+        currHealth = Mathf.Min(currHealth + healing, maxHealth);
+        OnHealed?.Invoke();
     }
     public float getHealth()
     {
-        return this.health;
+        return this.currHealth;
     }
 
     public void ResetHealth(float health)
     {
         isAlive = true;
-        this.health = health;
+        this.currHealth = health;
     }
    
 }
