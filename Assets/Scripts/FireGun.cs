@@ -16,20 +16,17 @@ public class FireGun : MonoBehaviour
     public event Action OnMagEmpty;
     private MagazineHandler magHandler;
     private MagUIHandler magUI;
+    private AudioHandler audioHandler;
     void Start()
     {
+        audioHandler = GetComponent<AudioHandler>();
         magHandler = GetComponent<MagazineHandler>();
         magUI = GetComponent<MagUIHandler>();
         if (magUI != null) magUI.UpdateMagUI(requiredAmmoType, magHandler.GetCurrBulletsCount());
     }
     public void Fire()
     {
-        if (magHandler != null && magHandler.IsMagEmpty())
-        {
-            Debug.Log("Mag is empty");
-            OnMagEmpty?.Invoke();
-            return;
-        }
+        
         
         if (Time.time > nextFire)
         {
@@ -37,6 +34,15 @@ public class FireGun : MonoBehaviour
         }
         else
         {
+            return;
+        }
+
+
+        if (magHandler != null && magHandler.IsMagEmpty())
+        {
+            Debug.Log("Mag is empty");
+            audioHandler.PlayRandomClipCategory3();
+            OnMagEmpty?.Invoke();
             return;
         }
 
@@ -49,6 +55,7 @@ public class FireGun : MonoBehaviour
         }
         Vector3 muzzleDirection = muzzleTip.forward;
         Debug.DrawRay(muzzleTip.position, muzzleDirection*800f, Color.red, 0.2f);
+        if (audioHandler != null) audioHandler.PlayRandomClipCategory1();
         if(Physics.Raycast(muzzleTip.position, muzzleDirection, out RaycastHit rayHit, Mathf.Infinity, hitLayers))
         {
             HealthHandler enemyHealth = rayHit.collider.GetComponent<HealthHandler>();
@@ -60,6 +67,11 @@ public class FireGun : MonoBehaviour
                 collisionParticles.transform.position = rayHit.point;
                 collisionParticles.transform.rotation = Quaternion.LookRotation(rayHit.normal);
                 collisionParticles.Play();
+            }
+            EnemyVisual enemyVisual = rayHit.collider.GetComponent<EnemyVisual>();
+            if(enemyVisual != null)
+            {
+                enemyVisual.PlayBloodVFX(rayHit.point, Quaternion.LookRotation(rayHit.normal));
             }
             
         }

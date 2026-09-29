@@ -3,7 +3,11 @@ using UnityEngine;
 public class MagazineHandler : MonoBehaviour
 {
     [SerializeField] private int magSize = 30;
-    
+    private AudioHandler audioHandler;
+    private void Start()
+    {
+        audioHandler = GetComponent<AudioHandler>();
+    }
     private int currBulletNum = 30;
     
     
@@ -14,6 +18,7 @@ public class MagazineHandler : MonoBehaviour
     }
     public int ReloadMag(int amount)
     {
+        if (audioHandler != null) audioHandler.PlayRandomClipCategory2();
         int missingBullets = magSize - currBulletNum;
         if (amount >= missingBullets)
         {

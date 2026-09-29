@@ -13,44 +13,45 @@ public class EnemyHandler : MonoBehaviour
     private EnemyAttack enemyAttack;
     private ObjectPool<GameObject> enemySpawner;
     private Coroutine hitCoroutine;
+    private NavMeshAgent aiBrain;
+    private Rigidbody rb;
     public ObjectPool<GameObject> ObjectPool { set => enemySpawner = value; }
-    void Start()
+    void Awake()
     {
-        
+        aiBrain = GetComponent<NavMeshAgent>();
         enemyVisual = GetComponent<EnemyVisual>();
         enemyAttack = GetComponent<EnemyAttack>();
         enemyMovement = GetComponent<EnemyMovement>();
+        rb = GetComponent<Rigidbody>();
+
         if (health != null) health.Health = enemyHealth;
-        HandleEnemyChase();
-    }
-    void Update()
-    {
-        if(enemyMovement != null)
-        {
-            enemyMovement.MoveTowardsTarget();
-        }
+        //HandleEnemyChase();
     }
     private void HandleEnemyChase()
     {
+        aiBrain.isStopped = false;
         if(enemyVisual != null)
         {
             enemyVisual.PlayWalking();
         }
         if(enemyMovement != null)
         {
+            enemyMovement.enabled = true;
             enemyMovement.SetCanMove(true);
         }
         if (enemyAttack != null)
         {
+            enemyAttack.enabled = true;
             enemyAttack.SetCanAtk(true);
         }
     }
-    public void RegenerateEnemy()
+    public void RegenerateEnemy(Vector3 spawnPos)
     {
-        NavMeshAgent aiBrain = GetComponent<NavMeshAgent>();
-        Rigidbody rb = GetComponent<Rigidbody>();
         aiBrain.enabled = true;
-        
+        aiBrain.Warp(spawnPos);
+        aiBrain.ResetPath();
+        aiBrain.isStopped = false;
+
         if (enemyCollider != null) enemyCollider.enabled = true;
         if (health != null) health.ResetHealth(enemyHealth);
         
@@ -71,11 +72,14 @@ public class EnemyHandler : MonoBehaviour
     private void HandleEnemyDeath()
     {
         StopEnemy();
-        NavMeshAgent aiBrain = GetComponent<NavMeshAgent>();
-        Rigidbody rb = GetComponent<Rigidbody>();
+        aiBrain.isStopped = true;
+        aiBrain.ResetPath();
         aiBrain.enabled = false;
         
-        if(enemyVisual != null) enemyVisual.PlayDeath();
+        if (enemyVisual != null) { 
+            enemyVisual.PlayDeath();
+            
+        }
         if(enemyAttack != null) enemyAttack.SetCanAtk(false);
         if (enemyCollider != null) enemyCollider.enabled = false;
         
@@ -106,11 +110,24 @@ public class EnemyHandler : MonoBehaviour
         {
             enemyVisual.StopWalking();
         }
-        if(enemyMovement != null)
+        if (enemyMovement != null)
         {
             enemyMovement.SetCanMove(false);
+            enemyMovement.enabled = false;
         }
-        
+        aiBrain.isStopped= true;
+
+
+    }
+    public void StunEnemy()
+    {
+        if (enemyAttack != null) enemyAttack.enabled = false;
+        StopEnemy();
+    }
+    public void UnStunEnemy()
+    {
+        if (enemyAttack != null) enemyAttack.enabled = true;
+        HandleEnemyChase();
     }
     
     public void RecvAtkType(AttacksEnum atkEnum)
@@ -126,20 +143,10 @@ public class EnemyHandler : MonoBehaviour
     
     private void HandleEnemyHit()
     {
-        if(hitCoroutine != null)
-        {
-            StopCoroutine(hitCoroutine);
-        }
-        hitCoroutine = StartCoroutine(OnEnemyHit());
+        if (enemyVisual != null) enemyVisual.PlayHit();
     }
-    private IEnumerator OnEnemyHit()
-    {
-        StopEnemy();
-        enemyVisual.PlayHit();
-        enemyAttack.SetCanAtk(false);
-        yield return new WaitForSeconds(0.35f);
-        HandleEnemyChase();
-    }
+
+    
     private void OnEnable()
     {
         if (health == null) return;

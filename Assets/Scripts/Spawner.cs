@@ -93,11 +93,10 @@ public class Spawner : MonoBehaviour
                 
                 GameObject enemy = enemyPool.Get();
                 Vector3 spawnPos = spawnLocations[UnityEngine.Random.Range(0, spawnLocations.Length)].position;
-                enemy.transform.position = spawnPos;
+                  
                 EnemyHandler enemyHandler = enemy.GetComponent<EnemyHandler>();
-                if (enemyHandler != null) enemyHandler.RegenerateEnemy();
-
-
+                if (enemyHandler != null) enemyHandler.RegenerateEnemy(spawnPos);
+                
                 waveSpawnCount--;
                 yield return new WaitForSeconds(1);
             }

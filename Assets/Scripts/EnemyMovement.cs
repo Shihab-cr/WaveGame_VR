@@ -8,7 +8,7 @@ public class EnemyMovement : MonoBehaviour
     private GameObject targetObject;
     private Vector3 targetPos;
     private NavMeshAgent aiBrain;
-    private bool canMove = true;
+    private bool canMove = false;
     [SerializeField] private float timeBetweenEachPositionSample = 0.2f;
     [SerializeField] private float rewindDuration = 10f;
     private float timerToRecordPosition = 0;
@@ -36,6 +36,10 @@ public class EnemyMovement : MonoBehaviour
         {
             HandleRewindWindow();
             timerToReducePrevPosQueue = 0;
+        }
+        if (canMove)
+        {
+            MoveTowardsTarget();
         }
     }
     public void MoveTowardsTarget()

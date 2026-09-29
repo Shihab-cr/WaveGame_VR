@@ -18,7 +18,7 @@ public class PropSpawner : MonoBehaviour
     private float nextSpawn;
     private bool isGameOver = false;
     private Coroutine spawnCoroutine;
-
+    private int nextpropIndex = 0;
     private List<Vector3> availablePos = new List<Vector3>();
     void Start()
     {
@@ -54,8 +54,9 @@ public class PropSpawner : MonoBehaviour
     }
     public GameObject OnPropCreation()
     {
-        int randIndex = Random.Range(0, lootDrops.Length);
-        GameObject prop = Instantiate(lootDrops[randIndex]);
+        if (nextpropIndex >= lootDrops.Length) nextpropIndex = 0;
+        GameObject prop = Instantiate(lootDrops[nextpropIndex]);
+        nextpropIndex++;
         ICollectableLoot collectable = prop.GetComponent<ICollectableLoot>();
         if (collectable != null) { 
             collectable.AssignPool(propPool);

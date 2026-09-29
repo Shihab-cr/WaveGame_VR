@@ -1914,6 +1914,10 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: -0.16
       objectReference: {fileID: 0}
+    - target: {fileID: 3922247334887890555, guid: e62e775cb5c996a4c944ff20f3cec481, type: 3}
+      propertyPath: pickupEffect
+      value: 
+      objectReference: {fileID: 7888857835762348946, guid: 159f96375b48bd340a0570636b504513, type: 3}
     - target: {fileID: 4346457330195515198, guid: e62e775cb5c996a4c944ff20f3cec481, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2068,7 +2072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7088135956211750147, guid: e62e775cb5c996a4c944ff20f3cec481, type: 3}
       propertyPath: m_LocalScale.y
-      value: 8.1347
+      value: 4.942888
       objectReference: {fileID: 0}
     - target: {fileID: 7088135956211750147, guid: e62e775cb5c996a4c944ff20f3cec481, type: 3}
       propertyPath: m_LocalScale.z
