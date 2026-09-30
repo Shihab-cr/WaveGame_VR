@@ -8,7 +8,9 @@ public class HealthHandler : MonoBehaviour
     public event Action OnDeath;
     public event Action OnHit;
     public event Action OnHealed;
+    public event Action OnResetHealth;
     private bool isAlive = true;
+    public bool IsAliveProperty { get => isAlive; }
     public float Health { set => currHealth = value; }
     public void Start()
     {
@@ -40,10 +42,11 @@ public class HealthHandler : MonoBehaviour
         return this.currHealth;
     }
 
-    public void ResetHealth(float health)
+    public void ResetHealth()
     {
         isAlive = true;
-        this.currHealth = health;
+        this.currHealth = maxHealth;
+        OnResetHealth?.Invoke();
     }
    
 }

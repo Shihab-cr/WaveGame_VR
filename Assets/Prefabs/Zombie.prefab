@@ -1111,7 +1111,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   health: {fileID: 3799874873121588073}
   enemyCollider: {fileID: 6832732909486713234}
-  enemyHealth: 100
 --- !u!114 &389502392631858948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1174,7 +1173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b2a5fb30a1096d49bb1386476784735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthHandler
-  health: 100
+  maxHealth: 100
 --- !u!82 &5710567842958363771
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1340,7 +1339,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: af539c0465932cc4384126d37940f4d2, type: 3}
   - {fileID: 8300000, guid: b1c0c3d24d9231e44a280a1386191af5, type: 3}
   - {fileID: 8300000, guid: 4a84e5a944f15fc4c944172b0be5d23e, type: 3}
-  - {fileID: 0}
   leftLegSource: {fileID: 9074200012782544452}
   rightLegSource: {fileID: 5972237072155339552}
 --- !u!1 &2680113585115827047

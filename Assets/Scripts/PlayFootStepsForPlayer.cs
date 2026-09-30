@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class HandlePlayerMovementInput : MonoBehaviour
+public class PlayFootStepsForPlayer : MonoBehaviour
 {
     [SerializeField] private InputActionReference movementInput;
     private float timer = 0f;

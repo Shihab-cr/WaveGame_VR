@@ -12,7 +12,8 @@ public class Spawner : MonoBehaviour
     private int remainingSpawnCount;
     private int currEnemyCount = 0;
     public event Action OnWaveCompleted;
-    
+
+    [SerializeField] private HealthHandler player;
     private ObjectPool<GameObject> enemyPool;
     [SerializeField] private int defaultSpawn = 8;
     [SerializeField] private int maxSpawnOnScene =15;
@@ -116,9 +117,29 @@ public class Spawner : MonoBehaviour
         if(!isSpawning && waveSpawnCount <=0 && enemyPool.CountActive == 0)
         {
             waveSpawnCount = -1;
-            OnWaveCompleted?.Invoke();
+            if(player !=null && player.IsAliveProperty)OnWaveCompleted?.Invoke();
         }
     }
-
+    private void OnEnable()
+    {
+        player.OnDeath += HandleSpawnerReset;
+    }
+    private void OnDisable()
+    {
+        player.OnDeath -= HandleSpawnerReset;
+    }
+    private void HandleSpawnerReset()
+    {
+        this.waveSpawnCount = 0;
+        this.currEnemyCount = 0;
+        enemies = FindObjectsByType<EnemyHandler>();
+        foreach(EnemyHandler enemy in enemies)
+        {
+            if (enemy.gameObject.activeInHierarchy)
+            {
+                enemy.ObjectPool.Release(enemy.gameObject);
+            }
+        }
+    }
    
 }

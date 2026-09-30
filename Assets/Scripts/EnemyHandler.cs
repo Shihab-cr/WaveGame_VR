@@ -7,7 +7,6 @@ public class EnemyHandler : MonoBehaviour
 {
     [SerializeField] private HealthHandler health;
     [SerializeField] private Collider enemyCollider;
-    [SerializeField] private float enemyHealth;
     private EnemyVisual enemyVisual;
     private EnemyMovement enemyMovement;
     private EnemyAttack enemyAttack;
@@ -15,7 +14,7 @@ public class EnemyHandler : MonoBehaviour
     private Coroutine hitCoroutine;
     private NavMeshAgent aiBrain;
     private Rigidbody rb;
-    public ObjectPool<GameObject> ObjectPool { set => enemySpawner = value; }
+    public ObjectPool<GameObject> ObjectPool { set => enemySpawner = value; get => enemySpawner; }
     void Awake()
     {
         aiBrain = GetComponent<NavMeshAgent>();
@@ -24,7 +23,7 @@ public class EnemyHandler : MonoBehaviour
         enemyMovement = GetComponent<EnemyMovement>();
         rb = GetComponent<Rigidbody>();
 
-        if (health != null) health.Health = enemyHealth;
+        
         //HandleEnemyChase();
     }
     private void HandleEnemyChase()
@@ -53,7 +52,7 @@ public class EnemyHandler : MonoBehaviour
         aiBrain.isStopped = false;
 
         if (enemyCollider != null) enemyCollider.enabled = true;
-        if (health != null) health.ResetHealth(enemyHealth);
+        if (health != null) health.ResetHealth();
         
         
         if (rb != null)

@@ -73,4 +73,10 @@ public class WaveManager : MonoBehaviour
     {
         spawner.OnWaveCompleted -= StartWaveBreakTimer;
     }
+
+    public void ResetWave()
+    {
+        this.waveNum = 0;
+        StartWaveBreakTimer();
+    }
 }
