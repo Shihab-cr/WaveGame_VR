@@ -31,7 +31,7 @@ public class AmmoBoxLogic : MonoBehaviour, ICollectableLoot
         }
         else
         {
-            gameObject.SetActive(false);
+           
             Debug.LogError("ObjectPool on box is null");
         }
        
